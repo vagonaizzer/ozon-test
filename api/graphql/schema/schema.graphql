@@ -1,0 +1,57 @@
+scalar Time
+
+type Post {
+  id:              ID!
+  authorId:        String!
+  title:           String!
+  content:         String!
+  commentsEnabled: Boolean!
+  createdAt:       Time!
+}
+
+type Comment {
+  id:        ID!
+  postId:    ID!
+  authorId:  String!
+  parentId:  ID
+  text:      String!
+  createdAt: Time!
+  replies(limit: Int, cursor: String): CommentPage!
+}
+
+type PostPage {
+  posts:      [Post!]!
+  nextCursor: String
+  hasMore:    Boolean!
+}
+
+type CommentPage {
+  comments:   [Comment!]!
+  nextCursor: String
+  hasMore:    Boolean!
+}
+
+
+type Query {
+  posts(limit: Int, cursor: String): PostPage!
+  post(id: ID!): Post
+  comments(postId: ID!, limit: Int, cursor: String): CommentPage!
+  replies(parentId: ID!, limit: Int, cursor: String): CommentPage!
+}
+
+
+type Mutation {
+  createPost(authorId: String!, title: String!, content: String!): Post!
+  toggleComments(postId: ID!, authorId: String!, enabled: Boolean!): Post!
+  createComment(
+    postId:   ID!
+    authorId: String!
+    parentId: ID
+    text:     String!
+  ): Comment!
+}
+
+
+type Subscription {
+  commentAdded(postId: ID!): Comment!
+}
