@@ -74,7 +74,6 @@ func (c *Comment) ParentID() *CommentID { return c.parentID }
 func (c *Comment) Text() CommentContent { return c.commentContent }
 func (c *Comment) CreatedAt() time.Time { return c.createdAt }
 
-// SetID используется репозиторием PostgreSQL для установки БД-сгенерированного ID.
 func (c *Comment) SetID(id CommentID) { c.commentID = id }
 
 func (c *Comment) IsRoot() bool { return c.parentID == nil }
